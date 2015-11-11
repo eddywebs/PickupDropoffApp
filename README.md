@@ -1,5 +1,7 @@
 # Pickup Guest Book App
 
+**Demo available at : eddywebs.com/guestbookapp**
+
 This is a Pickup Guest Book app built using AngularJS. Uses browser's localstorage to save and retrieve the data.
  It's an administrative application, which will allow you add a guest, remove a guest, and change some information of a guest.
 Use the registration form below in the app to register your guest. Provide a name, date of transition, and pick-up / drop-off information.
