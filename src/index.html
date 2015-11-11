@@ -4,76 +4,76 @@
   <head>
     <meta charset="utf-8" />
     <title>Shuffling Pines</title>
-    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
-
-    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="../bower_components/angular/angular.min.js"></script>
-
-    <script src="../src/app.js"></script>
+<!--     <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" /> -->
+         <link rel="stylesheet" href="styles.css" />
+<!--     // <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    // <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    // <script src="../bower_components/angular/angular.min.js"></script> -->
+    <script src="vendors.js"></script>
+    <script src="app.js"></script>
   </head>
+  <body ng-app="shuffling">
 
-  <body>
-    <h1>Shuffling Pines</h1>
+    <h1>Pickup Dropoff Guest app</h1>
     <div class="row">
       <div class="col-md-12">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="active"><a href="#form" aria-controls="form" role="tab" data-toggle="tab">Form</a></li>
-          <li role="presentation"><a href="#guests" aria-controls="guests" role="tab" data-toggle="tab">Guests</a></li>
+          <li role="presentation" id="formTab" class="active"><a href="#form" aria-controls="form" role="tab" data-toggle="tab">Form</a></li>
+          <li role="presentation" id="guestsTab"><a href="#guests" aria-controls="guests" role="tab" data-toggle="tab">Guests</a></li>
         </ul>
 
         <!-- Tab panes -->
         <div class="tab-content">
           <!-- Tab pane 1 -->
-          <div role="tabpanel" class="tab-pane active" id="form">
-            <div>
+          <div role="tabpanel" class="tab-pane active" id="form" ng-controller="FormController as form">
+            <div><div ng-show = "IsVisible">My DIV</div>
 
               <form class="col-md-6 well">
                 <div class="form-group">
                   <label for="guest-name">Guest Name</label>
-                  <input type="text" class="form-control" id="guest-name" placeholder="">
+                  <input type="text" class="form-control" id="guest-name" placeholder="" ng-model="form.name">
                 </div>
                 <div class="form-group">
                   <label for="transition-date">Transition Date</label>
-                  <input type="date" class="form-control" id="transition-date" placeholder="">
+                  <input type="date" class="form-control" id="transition-date" placeholder="" ng-model="form.date">
                 </div>
-                <div class="radio">
+                <div class="radio" >
                   <label>
-                    <input type="radio" name="pickup-dropoff" id="pickup" value="pickup" checked>
+                    <input type="radio" name="pickup-dropoff" id="pickup" value="pickup" checked ng-model="form.status">
                     Pick-up
                   </label>
                 </div>
                 <div class="radio">
                   <label>
-                    <input type="radio" name="pickup-dropoff" id="dropoff" value="dropoff">
+                    <input type="radio" name="pickup-dropoff" id="dropoff" value="dropoff" ng-model="form.status">
                     Drop-off
                   </label>
                 </div>
                 <div class="form-group">
                   <label for="location">Location</label>
-                  <textarea class="form-control" id="location"></textarea>
+                  <textarea class="form-control" id="location" ng-model="form.location"></textarea>
                 </div>
-                <button type="submit" class="btn">Submit</button>
+                <button type="submit" class="btn" ng-click="form.showHide(); form.addGuest(form.name, form.date, form.status, form.location)">Submit</button>
               </form>
 
               <!-- bound display -->
-              <div ng-show="false" class="col-md-6 well">
-                <div ng-show="false" class="form-group">
+              <div ng-show="true" class="col-md-6 well">
+                <div ng-show="true" class="form-group">
                   <label>Name: </label>
-                  John Harvard
+                  {{form.name}}
                 </div>
-                <div ng-show="false" class="form-group">
+                <div ng-show="true" class="form-group">
                   <label>Transition Date: </label>
-                  today!
+                    {{ form.date | date: 'MM/dd/yyyy' }}
                 </div>
-                <div ng-show="false" class="form-group">
+                <div ng-show="true" class="form-group">
                   <label>Status: </label>
-                  drop-off
+                  {{ form.status }}
                 </div>
-                <div ng-show="false" class="form-group">
+                <div ng-show="true" class="form-group">
                   <label>Location: </label>
-                  right here
+                  {{ form.location }}
                 </div>
               </div>
 
@@ -81,16 +81,37 @@
           </div>
 
           <!-- Tab pane 2 -->
-          <div role="tabpanel" class="tab-pane" id="guests">
-            <ul class="list-unstyled">
-              <li>
+          <div role="tabpanel" class="tab-pane" id="guests" ng-controller="TabController as tab">
+            <ul class="list-group">
+              <li class="list-group-item" data-ng-repeat="(index, guest) in tab.guests | filter : {deleted: false}">
+                  <!-- <div ng-show="true" class="col-md-6 well"> -->
+                    <!-- {{ guest.uid }} -->
+                    <div ng-show="true" class="form-group">
+                      <label>Name: </label>
+                      {{guest.name}}
+                    </div>
+                    <div ng-show="true" class="form-group">
+                      <label>Transition Date: </label>
+                        {{ guest.date | date: 'MM/dd/yyyy' }}
+                    </div>
+                    <div >
+                      <select class="selectpicker" ng-model="guest.status" ng-change="tab.update(guest.uid, guest.status, null)" data-ng-options="option for option in tab.options">
+                      </select>
+                    </div>  
+                    <div ng-show="true" class="form-group">
+                      <label>Location: </label>
+                      {{ guest.location }}
+                    </div>
+                    <button class="btn" ng-click="tab.update(guest.uid, null, true)">Delete</button>
 
+                  <!-- </div> -->
               </li>
             </ul>
           </div>
 
         </div>
       </div>
+      
     </div>
 
   </body>

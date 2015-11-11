@@ -19,6 +19,8 @@
   ],
   "dependencies": {
     "bootstrap": "~3.3.5",
-    "angular": "~1.4.6"
+    "angular": "~1.4.6",
+    "angular-mocks": "~1.4.7",
+    "github-fork-ribbon-css": "~0.1.1"
   }
 }
